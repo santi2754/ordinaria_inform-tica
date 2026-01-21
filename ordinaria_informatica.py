@@ -9,21 +9,16 @@ import csv
 import matplotlib.pyplot as plt
 import pandas as pd
 
-# -----------------------------
-# Constante
-# -----------------------------
 g = 9.81  # gravedad (m/s^2)
 
-# -----------------------------
 # 1. Leer datos desde JSON
-# -----------------------------
 with open("proyectiles.json", "r", encoding="utf-8") as f:
     data = json.load(f)
 
 resultados = []
 trayectorias = {}
 
-# Colores para cada proyectil
+# Colores por proyectil
 colores = {
     1: "blue",
     2: "red",
@@ -32,11 +27,9 @@ colores = {
     5: "purple"
 }
 
-# -----------------------------
 # 2. Cálculos de cada proyectil
-# -----------------------------
 for p in data["proyectiles"]:
-    pid = p["id"]
+    pid = int(p["id"])  # clave entera para colores
     v = p["velocidad"]
     angulo_rad = math.radians(p["angulo"])
 
@@ -60,9 +53,8 @@ for p in data["proyectiles"]:
         "tiempo_vuelo": tiempo_vuelo
     })
 
-# -----------------------------
 # 3. Guardar resultados en CSV
-# -----------------------------
+
 with open("resultados_proyectiles.csv", "w", newline="", encoding="utf-8") as f:
     writer = csv.DictWriter(f, fieldnames=resultados[0].keys())
     writer.writeheader()
@@ -70,18 +62,16 @@ with open("resultados_proyectiles.csv", "w", newline="", encoding="utf-8") as f:
 
 df = pd.DataFrame(resultados)
 
-# -----------------------------
 # 4. Análisis solicitado
-# -----------------------------
+
 print("Proyectil que alcanza mayor altura:")
 print(df.loc[df["altura_maxima"].idxmax()])
 
 print("\nProyectiles con tiempo de vuelo mayor a 5 segundos:")
 print(df[df["tiempo_vuelo"] > 5])
 
-# -----------------------------
 # 5. Animación de trayectorias (un color por proyectil)
-# -----------------------------
+
 plt.figure()
 plt.title("Animación de la trayectoria de los proyectiles")
 plt.xlabel("Distancia (m)")
@@ -96,9 +86,8 @@ for pid, (x, y) in trayectorias.items():
 
 plt.show()
 
-# -----------------------------
 # 6. Gráfica comparativa final
-# -----------------------------
+
 plt.figure()
 for pid, (x, y) in trayectorias.items():
     plt.plot(x, y, label=f"P{pid}", color=colores.get(pid, "black"))
@@ -109,3 +98,21 @@ plt.ylabel("Altura (m)")
 plt.legend()
 plt.grid(True)
 plt.show()
+
+# 7. Recapitulación FINAL (SOLO TERMINAL)
+
+print("\n" + "="*50)
+print("RECAPITULACIÓN FINAL DE LOS PROYECTILES")
+print("="*50)
+
+for _, row in df.iterrows():
+    print(f"\nProyectil {int(row['id'])}")
+    print(f"  Velocidad inicial : {row['velocidad']} m/s")
+    print(f"  Ángulo de disparo : {row['angulo']} grados")
+    print(f"  Alcance máximo    : {row['alcance_maximo']:.2f} m")
+    print(f"  Altura máxima     : {row['altura_maxima']:.2f} m")
+    print(f"  Tiempo de vuelo   : {row['tiempo_vuelo']:.2f} s")
+
+print("\n" + "="*50)
+print("FIN DEL ANÁLISIS")
+print("="*50)
