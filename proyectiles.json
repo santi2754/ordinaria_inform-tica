@@ -1,0 +1,29 @@
+{
+    "proyectiles": [
+        {
+            "id": 1,
+            "velocidad": 10,
+            "angulo": 30
+        },
+        {
+            "id": 2,
+            "velocidad": 55,
+            "angulo": 45
+        },
+        {
+            "id": 3,
+            "velocidad": 20,
+            "angulo": 60
+        },
+        {
+            "id": 4,
+            "velocidad": 70,
+            "angulo": 35
+        },
+        {
+            "id": 5,
+            "velocidad": 60,
+            "angulo": 50
+        }
+    ]
+}
